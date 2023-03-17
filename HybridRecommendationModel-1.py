@@ -1,4 +1,4 @@
-import os
+# import os
 
 # for dirname, _, filenames in os.walk('/kaggle/input'):
 #     for filename in filenames:
@@ -365,3 +365,5 @@ def predict():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+## https://ill-plum-kitten-wear.cyclic.app
