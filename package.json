@@ -2,7 +2,7 @@
   "name": "moviegenie_movierecommendationsystem_model",
   "version": "1.0.0",
   "description": "��#\u0000 \u0000M\u0000o\u0000v\u0000i\u0000e\u0000G\u0000e\u0000n\u0000i\u0000e\u0000-\u0000M\u0000o\u0000v\u0000i\u0000e\u0000R\u0000e\u0000c\u0000o\u0000m\u0000m\u0000e\u0000n\u0000d\u0000a\u0000t\u0000i\u0000o\u0000n\u0000S\u0000y\u0000s\u0000t\u0000e\u0000m\u0000-\u0000M\u0000o\u0000d\u0000e\u0000l\u0000\r\u0000 \u0000",
-  "main": "index.js",
+  "main": "HybridRecommendationModel-1.py",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
