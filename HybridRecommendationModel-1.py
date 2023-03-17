@@ -16,7 +16,7 @@ from surprise.model_selection import KFold
 from surprise.model_selection.validation import cross_validate
 from flask import Flask, request, jsonify
 
-# app = Flask(__name__)
+app = Flask(__name__)
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -130,6 +130,8 @@ with open('links_small.csv', 'w', encoding='utf8', newline='') as f:
 # =========================>
 links = pd.read_csv('links_small.csv')
 print(links.head())
+
+
 # =========================>
 
 def process_data(movies):
@@ -163,12 +165,12 @@ all_movies = []
 # Retrieve movie data for each year in the last 50 years
 for year in range(current_year, current_year - 50, -1):
     movies = retrieve_movies(year, api_key)
-    print(movies["results"])
-    print("----->>")
-    print(movies["page"])
+    # print(movies["results"])
+    # print("----->>")
+    # print(movies["page"])
     movie_data = process_data(movies)
     all_movies += movie_data
-print(all_movies)
+# print(all_movies)
 # Convert the list of movie data to a Pandas DataFrame
 movies_df = pd.DataFrame(all_movies)
 with open('movies_metadata.csv', 'w', encoding='utf8', newline='') as f:
@@ -236,8 +238,8 @@ links['tmdbId'] = col
 meta.rename(columns={'id': 'tmdbId'}, inplace=True)
 meta = pd.merge(meta, links, on='tmdbId')
 # meta.drop(['imdb_id'], axis=1, inplace=True)
-print(meta.head())
-print("--------------------------------------->>")
+# print(meta.head())
+# print("--------------------------------------->>")
 # Alternatively, run the following code to reduce the size of movies_metadata.csv to match links_small.csv
 # meta = meta[meta['tmdbId'].isin(links)]
 # meta.shape
@@ -279,8 +281,10 @@ def recommend(title, cosine_sim=cosine_sim):
     return meta[['original_title', 'vote_average']].iloc[movie_indices]
 
 
-print(recommend('Uri: The Surgical Strike'))
-print("--------------------------------------->>")
+# print(recommend('Uri: The Surgical Strike'))
+# print("--------------------------------------->>")
+
+
 # print(recommend('The Conjuring'))
 # print("--------------------------------------->>")
 # print(recommend('An American Tail'))
@@ -348,16 +352,16 @@ print("--------------------------------------->>")
 # print("--------------------------------------->>")
 
 
-# @app.route('/recommend_movie', methods=['POST'])
-# def predict():
-#     userId = request.form.get('userId')
-#     title = request.form.get('title')
-#
-#     # result = {'userId': userId, 'title': title}
-#     # input_query = np.array([[userId, title]])
-#     result = recommend(str(title))
-#     return jsonify({'Recommended_Movies': str(result)})
-#
-#
-# if __name__ == '__main__':
-#     app.run(debug=True)
+@app.route('/recommend_movie', methods=['POST'])
+def predict():
+    # userId = request.form.get('userId')
+    title = request.form.get('title')
+
+    # result = {'userId': userId, 'title': title}
+    # input_query = np.array([[userId, title]])
+    result = recommend(str(title))
+    return jsonify({'Recommended_Movies': str(result)})
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
