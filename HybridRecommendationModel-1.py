@@ -366,4 +366,3 @@ def predict():
 if __name__ == '__main__':
     app.run(debug=True)
 
-## https://ill-plum-kitten-wear.cyclic.app
