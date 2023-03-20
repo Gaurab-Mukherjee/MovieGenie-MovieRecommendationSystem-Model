@@ -11,9 +11,9 @@ import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
-from surprise import Reader, Dataset, SVD
-from surprise.model_selection import KFold
-from surprise.model_selection.validation import cross_validate
+# from surprise import Reader, Dataset, SVD
+# from surprise.model_selection import KFold
+# from surprise.model_selection.validation import cross_validate
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
