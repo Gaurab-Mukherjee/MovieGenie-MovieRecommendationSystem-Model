@@ -50,7 +50,7 @@ pd.set_option('display.width', 1000)
 # API key for the TMDB API
 api_key = "c1b5b5d1017cbf9f1ae2e311e9ab068a"
 
-count = 1
+count = 0
 
 
 # request_token = 68f3910a5f6fe5f2630749031c0587d927cef9ad
@@ -85,10 +85,6 @@ all_movies = []
 # Retrieve movie data for each year in the last 50 years
 for year in range(current_year, current_year - 50, -1):
     movies = retrieve_movies(year, api_key)
-    # print(movies["results"])
-    # for movie_id in movies["results"]:
-    #     movie_info = {}
-    #     movie_info["id"] = movie["id"]
     movie_data = pre_process_data(movies)
     all_movies += movie_data
 
@@ -109,33 +105,108 @@ def get_tmdb_and_imdb_id(movie_id, api_key):
 
 
 # Example usage
-with open('links_small.csv', 'w', encoding='utf8', newline='') as f:
-    thewriter = writer(f)
-    header = ['movieId', 'imdbId', 'tmdbId']
-    thewriter.writerow(header)
+# with open('links_small.csv', 'w', encoding='utf8', newline='') as f:
+#     thewriter = writer(f)
+#     header = ['movieId', 'imdbId', 'tmdbId']
+#     thewriter.writerow(header)
 
-    for id_movie in all_movies:
-        movie_id = id_movie
-        tmdb_id, imdb_id = get_tmdb_and_imdb_id(movie_id["id"], api_key)
-        # print(f"TMDB ID: {tmdb_id}, IMDB ID: {imdb_id}")
-        count = count + 1
-        # imdbID = imdb_id[3:]
-        if imdb_id is not None:
-            imdbID = imdb_id[3:]
-        else:
-            imdbID = ""
-        info = [count, imdbID, tmdb_id]
-        thewriter.writerow(info)
+all_list = []
+
+for id_movie in all_movies:
+    movie_id = id_movie
+    tmdb_id, imdb_id = get_tmdb_and_imdb_id(movie_id["id"], api_key)
+    # print(f"TMDB ID: {tmdb_id}, IMDB ID: {imdb_id}")
+    count = count + 1
+    # imdbID = imdb_id[3:]
+    if imdb_id is not None:
+        imdbID = imdb_id[3:]
+    else:
+        imdbID = ""
+    info = [{"movieId": count, "imdbId": imdbID, "tmdbId": tmdb_id}]
+    all_list += info
+    # print(all_list)
+    # thewriter.writerow(info)
+
+links = pd.DataFrame(all_list)
+
 
 # =========================>
-links = pd.read_csv('links_small.csv')
-print(links.head())
+# links = pd.read_csv('links_small.csv')
+# print(links.head())
 
 
 # =========================>
 
-def process_data(movies):
-    movie_data = []
+# def process_data(movies):
+#     movie_data = []
+#     for movie in movies["results"]:
+#         movie_info = {}
+#         movie_info["adult"] = movie["adult"]
+#         movie_info["backdrop_path"] = movie["backdrop_path"]
+#         movie_info["genre_ids"] = movie["genre_ids"]
+#         movie_info["id"] = movie["id"]
+#         movie_info["original_language"] = movie["original_language"]
+#         movie_info["original_title"] = movie["original_title"]
+#         movie_info["overview"] = movie["overview"]
+#         movie_info["popularity"] = movie["popularity"]
+#         movie_info["poster_path"] = movie["poster_path"]
+#         movie_info["release_date"] = movie["release_date"]
+#         movie_info["title"] = movie["title"]
+#         movie_info["video"] = movie["video"]
+#         movie_info["vote_average"] = movie["vote_average"]
+#         movie_info["vote_count"] = movie["vote_count"]
+#         movie_data.append(movie_info)
+#     return movie_data
+
+
+# Get the current year
+# current_year = int(time.strftime("%Y"))
+#
+# # Initialize a list to store movie data
+# all_movies = []
+
+# Retrieve movie data for each year in the last 50 years
+# for year in range(current_year, current_year - 50, -1):
+#     movies = retrieve_movies(year, api_key)
+#     # print(movies["results"])
+#     # print("----->>")
+#     # print(movies["page"])
+#     movie_data = process_data(movies)
+#     all_movies += movie_data
+# print(all_movies)
+# Convert the list of movie data to a Pandas DataFrame
+# movies_df = pd.DataFrame(all_movies)
+# with open('movies_metadata.csv', 'w', encoding='utf8', newline='') as f:
+#     thewriter = writer(f)
+#     header = ['adult', 'backdrop_path', 'genre_ids', 'id', 'original_language', 'original_title', 'overview',
+#               'popularity', 'poster_path', 'release_date', 'title', 'video', 'vote_average', 'vote_count']
+#     thewriter.writerow(header)
+#
+#     for movie in all_movies:
+#         adult = movie["adult"]
+#         backdrop_path = movie["backdrop_path"]
+#         genre_ids = movie["genre_ids"]
+#         xid = movie["id"]
+#         original_language = movie["original_language"]
+#         original_title = movie["original_title"]
+#         overview = movie["overview"]
+#         popularity = movie["popularity"]
+#         poster_path = movie["poster_path"]
+#         release_date = movie["release_date"]
+#         title = movie["title"]
+#         video = movie["video"]
+#         vote_average = movie["vote_average"]
+#         vote_count = movie["vote_count"]
+#         info = [adult, backdrop_path, genre_ids, xid, original_language, original_title, overview, popularity,
+#                 poster_path, release_date, title, video, vote_average, vote_count]
+#         thewriter.writerow(info)
+
+# meta = pd.read_csv('movies_metadata.csv')
+
+
+# Function to pre-process the movie data
+def meta_process_data(movies):
+    movie_meta_data = []
     for movie in movies["results"]:
         movie_info = {}
         movie_info["adult"] = movie["adult"]
@@ -152,15 +223,12 @@ def process_data(movies):
         movie_info["video"] = movie["video"]
         movie_info["vote_average"] = movie["vote_average"]
         movie_info["vote_count"] = movie["vote_count"]
-        movie_data.append(movie_info)
-    return movie_data
+        movie_meta_data.append(movie_info)
+    return movie_meta_data
 
-
-# Get the current year
-current_year = int(time.strftime("%Y"))
 
 # Initialize a list to store movie data
-all_movies = []
+all_movies_meta = []
 
 # Retrieve movie data for each year in the last 50 years
 for year in range(current_year, current_year - 50, -1):
@@ -168,45 +236,11 @@ for year in range(current_year, current_year - 50, -1):
     # print(movies["results"])
     # print("----->>")
     # print(movies["page"])
-    movie_data = process_data(movies)
-    all_movies += movie_data
-# print(all_movies)
-# Convert the list of movie data to a Pandas DataFrame
-movies_df = pd.DataFrame(all_movies)
-with open('movies_metadata.csv', 'w', encoding='utf8', newline='') as f:
-    thewriter = writer(f)
-    header = ['adult', 'backdrop_path', 'genre_ids', 'id', 'original_language', 'original_title', 'overview',
-              'popularity', 'poster_path', 'release_date', 'title', 'video', 'vote_average', 'vote_count']
-    thewriter.writerow(header)
+    movie_meta_data = meta_process_data(movies)
+    all_movies_meta += movie_meta_data
+# print(all_movies['results'])
 
-    for movie in all_movies:
-        adult = movie["adult"]
-        backdrop_path = movie["backdrop_path"]
-        genre_ids = movie["genre_ids"]
-        xid = movie["id"]
-        original_language = movie["original_language"]
-        original_title = movie["original_title"]
-        overview = movie["overview"]
-        popularity = movie["popularity"]
-        poster_path = movie["poster_path"]
-        release_date = movie["release_date"]
-        title = movie["title"]
-        video = movie["video"]
-        vote_average = movie["vote_average"]
-        vote_count = movie["vote_count"]
-        info = [adult, backdrop_path, genre_ids, xid, original_language, original_title, overview, popularity,
-                poster_path, release_date, title, video, vote_average, vote_count]
-        thewriter.writerow(info)
-
-meta = pd.read_csv('movies_metadata.csv')
-
-# for year in range(current_year, current_year - 50, -1):
-#     movies = retrieve_movies(year, api_key)
-#     # movie_data = movies["results"]
-#     # print(movie_data)
-#     # all_movies += movie_data
-#     meta = pd.DataFrame(movies["results"])
-
+meta = pd.DataFrame(all_movies_meta)
 meta['overview'] = meta['overview'].fillna('')
 print(meta['overview'].head())  # Sample descriptions
 print("--------------------------------------->>")
@@ -278,7 +312,7 @@ def recommend(title, cosine_sim=cosine_sim):
             movie_indices.remove(i)
 
     # Return the most similar movies qualifying the 5.0 rating threshold
-    return meta[['original_title', 'vote_average']].iloc[movie_indices]
+    return meta[['title', 'original_title', 'vote_average']].iloc[movie_indices]
 
 
 # print(recommend('Uri: The Surgical Strike'))
@@ -365,4 +399,3 @@ def predict():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
