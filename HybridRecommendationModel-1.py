@@ -1,3 +1,4 @@
+import json
 import time
 import requests
 import numpy as np
@@ -197,6 +198,48 @@ def emoji_recommend(emoji_keyword):
     return chosen_movie
 
 
+################################################################################
+# ========================= Genre based recommendation system ==================
+################################################################################
+
+def get_movie_genres(year):
+    url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}&language=en-US&with_original_language=hi&page=1&primary_release_year={year}'
+    response = requests.get(url)
+    data = json.loads(response.text)
+    genres = {genre['name']: genre['id'] for genre in data['genres']}
+    return genres
+
+
+def get_movie_ids_by_genre(genre_id, year):
+    url = f'https://api.themoviedb.org/3/discover/movie?api_key={api_key}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres={genre_id}&with_original_language=hi&page=1&primary_release_year={year}'
+    response = requests.get(url)
+    data = json.loads(response.text)
+    movie_ids = [movie['id'] for movie in data['results']]
+    return random.sample(movie_ids, k=10)
+
+
+def get_movie_details(movie_id, year):
+    url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US&with_original_language=hi&page=1&primary_release_year={year}'
+    response = requests.get(url)
+    data = json.loads(response.text)
+    return data
+
+
+def recommend_movies_by_genre(genre, year):
+    genres = get_movie_genres(year)
+    if genre not in genres:
+        return 'Invalid genre'
+    genre_id = genres[genre]
+    movie_ids = get_movie_ids_by_genre(genre_id, year)
+    recommendations = []
+    for movie_id in movie_ids[:10]:
+        movie_details = get_movie_details(movie_id, year)
+        recommendations.append(movie_details)
+    return recommendations
+
+# recommend_movies_by_genre('Romance', 2022)
+
+
 @app.route('/recommend_movie', methods=['POST'])
 def predict():
     title = request.form.get('title')
@@ -208,6 +251,14 @@ def predict():
 def predict_emoji():
     emoji = request.form.get('emoji')
     result = emoji_recommend(emoji)
+    return str(result)
+
+
+@app.route('/genre_recommend_movie', methods=['POST'])
+def predict_genre():
+    genre = request.form.get('genre')
+    year = request.form.get('year')
+    result = recommend_movies_by_genre(genre, year)
     return str(result)
 
 
