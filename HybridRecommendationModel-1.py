@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from flask import Flask, request, jsonify
+import random
 
 app = Flask(__name__)
 
@@ -157,10 +158,56 @@ def recommend(title, cosine_sim=cosine_sim, meta=meta):
         'records')
 
 
+# Emoji Function
+def emoji_recommend(emoji_keyword):
+    # Set up dictionary of emoji keywords and corresponding TMDB genres
+    api_key = "c1b5b5d1017cbf9f1ae2e311e9ab068a"
+    emoji_dict = {
+        "🎬": 28,  # Action
+        "🎭": 18,  # Drama
+        "🤡": 35,  # Comedy
+        "👻": 27,  # Horror
+        "🧝‍♀️": 14,  # Fantasy
+        "🚀": 878,  # Science Fiction
+        "💘": 10749,  # Romance
+        "👑": 14,  # Fantasy
+        "🕵️": 9648,  # Mystery
+        "👨‍👩‍👧‍👦": 10751,  # Family
+        "😈": 80,  # Crime
+        "🪂": 12,  # Adventure
+        "🏺": 36  # History
+    }
+
+    # Choose a random emoji keyword and corresponding genre
+    # emoji_keyword, genre = random.choice(list(emoji_dict.items()))
+    # emoji_keyword = input("Enter an emoji: ")
+    genre = emoji_dict[emoji_keyword]
+
+    # Set up TMDB API request for movies in chosen genre
+    url = f"https://api.themoviedb.org/3/discover/movie?api_key={api_key}&with_genres={genre}&language=en-US&with_original_language=hi"
+
+    # Send request and retrieve list of movies
+    response = requests.get(url)
+    movies = response.json()["results"]
+
+    # Choose a random movie from the list
+    chosen_movie = random.choice(movies)
+
+    # Return recommendation data
+    return chosen_movie
+
+
 @app.route('/recommend_movie', methods=['POST'])
 def predict():
     title = request.form.get('title')
     result = recommend(str(title))
+    return str(result)
+
+
+@app.route('/emoji_recommend_movie', methods=['POST'])
+def predict_emoji():
+    emoji = request.form.get('emoji')
+    result = emoji_recommend(emoji)
     return str(result)
 
 
