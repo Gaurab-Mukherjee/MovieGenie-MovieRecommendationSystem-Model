@@ -240,21 +240,21 @@ def recommend_movies_by_genre(genre, year):
 # recommend_movies_by_genre('Romance', 2022)
 
 
-@app.route('/recommend_movie', methods=['GET'])
+@app.route('/recommend_movie', methods=['POST'])
 def predict():
     title = request.form.get('title')
     result = recommend(str(title))
     return str(result)
 
 
-@app.route('/emoji_recommend_movie', methods=['GET'])
+@app.route('/emoji_recommend_movie', methods=['POST'])
 def predict_emoji():
     emoji = request.form.get('emoji')
     result = emoji_recommend(emoji)
     return str(result)
 
 
-@app.route('/genre_recommend_movie', methods=['GET'])
+@app.route('/genre_recommend_movie', methods=['POST'])
 def predict_genre():
     genre = request.form.get('genre')
     year = request.form.get('year')
