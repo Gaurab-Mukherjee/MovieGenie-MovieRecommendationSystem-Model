@@ -151,12 +151,11 @@ def recommend(title, cosine_sim=cosine_sim, meta=meta):
         if pop < 5 or pop > 10:
             movie_indices.remove(i)
     # Return the most similar movies qualifying the 5.0 rating threshold
-    return meta[
-        ['adult', 'backdrop_path', 'genre_ids', 'tmdbId', 'original_language', 'original_title', 'overview',
-         'popularity',
-         'poster_path', 'release_date', 'title', 'video', 'vote_average', 'vote_count', 'movieId', 'imdbId']].iloc[
-        movie_indices].to_dict(
-        'records')
+    return {'results': meta[['adult', 'backdrop_path', 'genre_ids', 'tmdbId', 'original_language', 'original_title',
+                             'overview',
+                             'popularity',
+                             'poster_path', 'release_date', 'title', 'video', 'vote_average', 'vote_count', 'movieId',
+                             'imdbId']].iloc[movie_indices].to_dict('records')}
 
 
 # Emoji Function
@@ -236,6 +235,7 @@ def recommend_movies_by_genre(genre, year):
         movie_details = get_movie_details(movie_id, year)
         recommendations.append(movie_details)
     return recommendations
+
 
 # recommend_movies_by_genre('Romance', 2022)
 
