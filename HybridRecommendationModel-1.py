@@ -251,8 +251,10 @@ def recommend_movies_by_genre(genre, year):
 
 @app.route('/recommend_movie', methods=['POST'])
 def predict():
-    title = request.form.get('title')
-    result = recommend(str(title))
+    request_data = request.data
+    json_data = json.loads(request_data)
+    title = json_data['title']
+    result = recommend(title)
     return result
 
 
