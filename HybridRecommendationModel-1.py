@@ -151,11 +151,20 @@ def recommend(title, cosine_sim=cosine_sim, meta=meta):
         if pop < 5 or pop > 10:
             movie_indices.remove(i)
     # Return the most similar movies qualifying the 5.0 rating threshold
-    return {'results': meta[['adult', 'backdrop_path', 'genre_ids', 'tmdbId', 'original_language', 'original_title',
+    # return {'results': meta[['adult', 'backdrop_path', 'genre_ids', 'tmdbId', 'original_language', 'original_title',
+    #                          'overview',
+    #                          'popularity',
+    #                          'poster_path', 'release_date', 'title', 'video', 'vote_average', 'vote_count', 'movieId',
+    #                          'imdbId']].iloc[movie_indices].to_dict('records')}
+
+    data = {'results': meta[['adult', 'backdrop_path', 'genre_ids', 'tmdbId', 'original_language', 'original_title',
                              'overview',
                              'popularity',
                              'poster_path', 'release_date', 'title', 'video', 'vote_average', 'vote_count', 'movieId',
                              'imdbId']].iloc[movie_indices].to_dict('records')}
+
+    json_data = json.dumps(data, ensure_ascii=False).encode('utf8')
+    return json_data
 
 
 # Emoji Function
@@ -244,7 +253,7 @@ def recommend_movies_by_genre(genre, year):
 def predict():
     title = request.form.get('title')
     result = recommend(str(title))
-    return str(result)
+    return result
 
 
 @app.route('/emoji_recommend_movie', methods=['POST'])
