@@ -243,7 +243,7 @@ def recommend_movies_by_genre(genre, year):
     for movie_id in movie_ids[:10]:
         movie_details = get_movie_details(movie_id, year)
         recommendations.append(movie_details)
-    return recommendations
+    return {'results': recommendations}
 
 
 # recommend_movies_by_genre('Romance', 2022)
@@ -262,7 +262,7 @@ def predict():
 def predict_emoji():
     emoji = request.form.get('emoji')
     result = emoji_recommend(emoji)
-    return str(result)
+    return result
 
 
 @app.route('/genre_recommend_movie', methods=['POST'])
@@ -270,7 +270,7 @@ def predict_genre():
     genre = request.form.get('genre')
     year = request.form.get('year')
     result = recommend_movies_by_genre(genre, year)
-    return str(result)
+    return result
 
 
 if __name__ == '__main__':
