@@ -198,12 +198,13 @@ def emoji_recommend(emoji_keyword):
     # Send request and retrieve list of movies
     response = requests.get(url)
     movies = response.json()["results"]
-
-    # Choose a random movie from the list
-    chosen_movie = random.choice(movies)
-
+    recommendations = []
+    for i in range(10):
+        # Choose a random movie from the list
+        chosen_movie = random.choice(movies)
+        recommendations.append(chosen_movie)
     # Return recommendation data
-    return chosen_movie
+    return {'results': recommendations}
 
 
 ################################################################################
