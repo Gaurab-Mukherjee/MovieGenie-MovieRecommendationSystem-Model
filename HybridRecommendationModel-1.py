@@ -172,19 +172,32 @@ def emoji_recommend(emoji_keyword):
     # Set up dictionary of emoji keywords and corresponding TMDB genres
     api_key = "c1b5b5d1017cbf9f1ae2e311e9ab068a"
     emoji_dict = {
-        "🎬": 28,  # Action
-        "🎭": 18,  # Drama
-        "🤡": 35,  # Comedy
-        "👻": 27,  # Horror
-        "🧝‍♀️": 14,  # Fantasy
-        "🚀": 878,  # Science Fiction
-        "💘": 10749,  # Romance
-        "👑": 14,  # Fantasy
-        "🕵️": 9648,  # Mystery
-        "👨‍👩‍👧‍👦": 10751,  # Family
-        "😈": 80,  # Crime
-        "🪂": 12,  # Adventure
-        "🏺": 36  # History
+        # "🎬": 28,  # Action
+        # "🎭": 18,  # Drama
+        # "🤡": 35,  # Comedy
+        # "👻": 27,  # Horror
+        # "🧝‍♀️": 14,  # Fantasy
+        # "🚀": 878,  # Science Fiction
+        # "💘": 10749,  # Romance
+        # "👑": 14,  # Fantasy
+        # "🕵️": 9648,  # Mystery
+        # "👨‍👩‍👧‍👦": 10751,  # Family
+        # "😈": 80,  # Crime
+        # "🪂": 12,  # Adventure
+        # "🏺": 36  # History
+
+        "&#x1F3AC;": 28,  # Action
+        "&#x1F3AD;": 18,  # Drama
+        "&#x1F921;": 35,  # Comedy
+        "&#x1F47B;": 27,  # Horror
+        "&#x1F451;": 14,  # Fantasy
+        "&#x1F680;": 878,  # Science Fiction
+        "&#x1F498;": 10749,  # Romance
+        "&#x1F575;": 9648,  # Mystery
+        "&#x1F46A;": 10751,  # Family
+        "&#x1F608;": 80,  # Crime
+        "&#x1FA82;": 12,  # Adventure
+        "&#x1F36F;": 36  # History
     }
 
     # Choose a random emoji keyword and corresponding genre
